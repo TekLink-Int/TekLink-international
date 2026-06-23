@@ -1,0 +1,14 @@
+﻿node_modules/
+.next/
+out/
+.env
+.env.local
+.env.*.local
+deploy/
+deploy_stage/
+deploy_stage2/
+deploy_stage3/
+teklink-deploy.zip
+.DS_Store
+*.pem
+npm-debug.log*

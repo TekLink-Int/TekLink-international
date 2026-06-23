@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+:root {
+  --f-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px; --space-4: 16px; --space-5: 20px;
+  --space-6: 24px; --space-8: 32px;  --space-10: 40px; --space-12: 48px; --space-16: 64px;
+
+  --radius-sm: 4px; --radius-md: 6px; --radius-lg: 8px; --radius-xl: 10px; --radius-2xl: 12px;
+
+  --shadow-sm: 0 1px 2px rgba(27,42,58,0.06);
+  --shadow-md: 0 10px 26px -14px rgba(27,42,58,0.22);
+  --shadow-lg: 0 22px 48px -20px rgba(27,42,58,0.26);
+
+  /* Admiralty — light (default) */
+  --canvas:  #f3efe5;
+  --surface: #faf7ef;
+  --sunken:  #ece7d8;
+  --navy:    #06121e;
+  --navy-2:  #16314a;
+  --text-primary:   #1b2a3a;
+  --text-secondary: #435363;
+  --text-muted:     #5f6b78;
+  --text-on-navy:   #f3efe5;
+  --accent:     #0d6e7e;
+  --accent-ink: #0a5560;
+  --accent-soft:#6bb3c0;
+  --accent-dim: rgba(13,110,126,0.10);
+  --accent-mid: rgba(13,110,126,0.16);
+  --signal-go:          #2c6e49;
+  --signal-go-dim:      rgba(44,110,73,0.12);
+  --signal-caution:     #9a6c12;
+  --signal-caution-dim: rgba(154,108,18,0.14);
+  --signal-danger:      #bc4327;
+  --signal-danger-dim:  rgba(188,67,39,0.12);
+  --border:        rgba(27,42,58,0.14);
+  --border-strong: rgba(27,42,58,0.24);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--f-sans);
+  background: var(--canvas);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* Focus ring */
+:focus-visible {
+  outline: 3px solid var(--accent-dim);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
