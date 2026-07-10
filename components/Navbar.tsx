@@ -1,9 +1,21 @@
 'use client'
 
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { login, logout } from '@/app/actions'
+
+const navItems = [
+  { label: 'Maritime & Trade', href: '/' },
+  { label: 'Deeptech', href: '/deeptech' },
+  { label: 'Fintech Solutions', href: '/fintech' },
+]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const { data: session } = useSession()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -13,6 +25,7 @@ export default function Navbar() {
 
   return (
     <nav
+      className="teklink-nav"
       style={{
         position: 'fixed',
         top: 0,
@@ -35,6 +48,7 @@ export default function Navbar() {
     >
       {/* Logo */}
       <div
+        className="teklink-logo"
         style={{
           fontFamily: 'var(--font-ibm-plex-sans, var(--f-sans))',
           fontWeight: 700,
@@ -48,60 +62,98 @@ export default function Navbar() {
       </div>
 
       {/* Nav items */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-8)' }}>
-        <span
-          style={{
-            fontSize: '14px',
-            fontWeight: 500,
-            color: 'var(--accent-soft)',
-            borderBottom: '1px solid var(--accent-soft)',
-            paddingBottom: '2px',
-          }}
-        >
-          Maritime
-        </span>
+      <div
+        className="teklink-nav-links"
+        style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)', flexWrap: 'nowrap' }}
+      >
+        {navItems.map((item) => {
+          const active = pathname === item.href
 
-        <span
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--space-2)',
-            fontSize: '14px',
-            fontWeight: 500,
-            color: 'rgba(243,239,229,0.35)',
-          }}
-        >
-          Financial
-          <span
-            style={{
-              fontFamily: 'var(--font-ibm-plex-mono, var(--f-mono))',
-              fontSize: '10px',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-              padding: '2px 6px',
-              background: 'rgba(13,110,126,0.18)',
-              color: 'var(--accent-soft)',
-              borderRadius: 'var(--radius-sm)',
-            }}
-          >
-            Soon
-          </span>
-        </span>
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                color: active ? 'var(--accent-soft)' : 'rgba(243,239,229,0.65)',
+                borderBottom: active ? '1px solid var(--accent-soft)' : '1px solid transparent',
+                paddingBottom: '2px',
+                transition: 'color 0.2s, border-color 0.2s',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--text-on-navy)'
+                e.currentTarget.style.borderColor = active
+                  ? 'var(--accent-soft)'
+                  : 'rgba(243,239,229,0.32)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = active
+                  ? 'var(--accent-soft)'
+                  : 'rgba(243,239,229,0.65)'
+                e.currentTarget.style.borderColor = active ? 'var(--accent-soft)' : 'transparent'
+              }}
+            >
+              {item.label}
+            </Link>
+          )
+        })}
 
-        <a
-          href="#collaborate"
+        <Link
+          href={pathname === '/' ? '#collaborate' : '/#collaborate'}
           style={{
             fontSize: '14px',
             fontWeight: 500,
             color: 'rgba(243,239,229,0.65)',
             transition: 'color 0.2s',
+            whiteSpace: 'nowrap',
           }}
           onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-on-navy)')}
           onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(243,239,229,0.65)')}
         >
           Collaborate
-        </a>
+        </Link>
+
+        {session?.user ? (
+          <form action={logout}>
+            <button
+              type="submit"
+              style={{
+                fontSize: '13px',
+                fontWeight: 600,
+                color: 'var(--text-on-navy)',
+                background: 'rgba(243,239,229,0.1)',
+                border: '1px solid rgba(243,239,229,0.22)',
+                borderRadius: '999px',
+                padding: '7px 16px',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Sign out
+            </button>
+          </form>
+        ) : (
+          <form action={login}>
+            <button
+              type="submit"
+              style={{
+                fontSize: '13px',
+                fontWeight: 600,
+                color: 'var(--navy)',
+                background: 'var(--accent-soft)',
+                border: '1px solid var(--accent-soft)',
+                borderRadius: '999px',
+                padding: '7px 16px',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Sign in
+            </button>
+          </form>
+        )}
       </div>
     </nav>
   )

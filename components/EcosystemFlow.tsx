@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 
 const steps = [
   {
@@ -130,10 +130,9 @@ export default function EcosystemFlow() {
           }}
         >
           {steps.map((step, i) => (
-            <>
+            <Fragment key={step.number}>
               {/* Step */}
               <div
-                key={step.number}
                 data-flow-step
                 className="flow-step"
                 style={{ flex: 1, padding: '0 var(--space-6)' }}
@@ -232,7 +231,7 @@ export default function EcosystemFlow() {
                   />
                 </div>
               )}
-            </>
+            </Fragment>
           ))}
         </div>
       </div>

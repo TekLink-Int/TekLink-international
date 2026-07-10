@@ -30,6 +30,16 @@ const solutions = [
     audience: 'For buyers & investors',
     url: 'https://ship.feasibility.teklink.com.au',
   },
+  {
+    eyebrow: 'Commodity Risk',
+    title: 'Iron Ore Hedging',
+    description:
+      'Iron ore exposure workspace for cargo economics, hedge scenarios, landed cost analysis, and effective cost visibility.',
+    badges: ['Exposure', 'Hedging', 'Scenario Analysis'],
+    audience: 'For operators & traders',
+    url: '#collaborate',
+    cta: 'Discuss Platform',
+  },
 ]
 
 export default function SolutionCards() {
@@ -87,12 +97,14 @@ export default function SolutionCards() {
 }
 
 function SolutionCard({ solution }: { solution: (typeof solutions)[0] }) {
+  const isExternal = solution.url.startsWith('http')
+
   return (
     <a
       data-solution-card
       href={solution.url}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -208,7 +220,7 @@ function SolutionCard({ solution }: { solution: (typeof solutions)[0] }) {
             gap: '4px',
           }}
         >
-          Open Platform
+          {solution.cta ?? 'Open Platform'}
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
             <path
               d="M2.5 7h9M8 3.5l3.5 3.5-3.5 3.5"

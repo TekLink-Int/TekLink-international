@@ -1,45 +1,34 @@
-'use client'
+import Link from 'next/link'
 
-import { useState } from 'react'
-
-const coming = [
+const fintechSolutions = [
   {
-    title: 'Fund Management',
-    description: 'Portfolio analytics, NAV tracking, and investor reporting for asset managers.',
-    badges: ['Portfolio', 'NAV', 'Reporting'],
+    title: 'OCR to ICR',
+    description: 'Invoice OCR/ICR with PO reconciliation, validation logs, and reviewer workflows.',
+    badges: ['OCR', 'ICR', 'PO Match'],
   },
   {
-    title: 'Iron Ore Hedging',
-    description: 'Commodity hedging tools for maritime operators and trade finance teams.',
-    badges: ['Derivatives', 'Risk', 'P&L'],
+    title: 'Vendor Select',
+    description: 'SAP PO vendor-selection workflow for auditable supplier comparison and approvals.',
+    badges: ['SAP PO', 'Vendors', 'Approval'],
   },
   {
-    title: 'Trade Finance',
-    description: 'Voyage-linked financing instruments and letter of credit management.',
-    badges: ['LC', 'Finance', 'Trade'],
+    title: 'Commercial Calculator',
+    description: 'Margin, ROI, GST, loan, investment, commission, and currency calculation workspace.',
+    badges: ['ROI', 'Margin', 'GST'],
+  },
+  {
+    title: 'Fund Management System',
+    description: 'Fund accounting, NAV, investor capital, portfolio reporting, and secure portals.',
+    badges: ['NAV', 'Ledger', 'Portal'],
+  },
+  {
+    title: 'GRC Application',
+    description: 'Governance, risk, and compliance workflows for assessments, audit, and controls.',
+    badges: ['Governance', 'Risk', 'Compliance'],
   },
 ]
 
 export default function FinancialTeaser() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done'>('idle')
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email || status !== 'idle') return
-    setStatus('loading')
-    try {
-      const res = await fetch('/api/notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-      setStatus(res.ok ? 'done' : 'idle')
-    } catch {
-      setStatus('idle')
-    }
-  }
-
   return (
     <section
       style={{
@@ -48,7 +37,6 @@ export default function FinancialTeaser() {
       }}
     >
       <div style={{ maxWidth: '72rem', margin: '0 auto' }}>
-        {/* Header row */}
         <div
           style={{
             display: 'flex',
@@ -71,7 +59,7 @@ export default function FinancialTeaser() {
                 marginBottom: 'var(--space-4)',
               }}
             >
-              Coming Next
+              Page 3
             </p>
             <h2
               style={{
@@ -83,63 +71,29 @@ export default function FinancialTeaser() {
                 lineHeight: 1.1,
               }}
             >
-              Financial Solutions
+              Fintech Solutions
             </h2>
           </div>
 
-          {/* Notify form */}
-          {status === 'done' ? (
-            <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--accent-soft)' }}>
-              You&apos;re on the list.
-            </p>
-          ) : (
-            <form
-              onSubmit={submit}
-              style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}
-            >
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                style={{
-                  height: '44px',
-                  padding: '0 var(--space-4)',
-                  minWidth: '220px',
-                  background: 'rgba(243,239,229,0.07)',
-                  border: '1px solid rgba(243,239,229,0.18)',
-                  borderRadius: 'var(--radius-md)',
-                  color: 'var(--text-on-navy)',
-                  fontSize: '14px',
-                  fontFamily: 'var(--font-ibm-plex-sans, var(--f-sans))',
-                  outline: 'none',
-                }}
-              />
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                style={{
-                  height: '44px',
-                  padding: '0 var(--space-6)',
-                  background: 'var(--accent)',
-                  color: '#fff',
-                  border: '1px solid var(--accent)',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  fontFamily: 'var(--font-ibm-plex-sans, var(--f-sans))',
-                  cursor: status === 'loading' ? 'not-allowed' : 'pointer',
-                  opacity: status === 'loading' ? 0.6 : 1,
-                }}
-              >
-                Notify Me
-              </button>
-            </form>
-          )}
+          <Link
+            href="/fintech"
+            style={{
+              height: '44px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '0 var(--space-6)',
+              background: 'var(--accent)',
+              color: '#fff',
+              border: '1px solid var(--accent)',
+              borderRadius: 'var(--radius-md)',
+              fontSize: '14px',
+              fontWeight: 600,
+            }}
+          >
+            Open Fintech
+          </Link>
         </div>
 
-        {/* Locked cards */}
         <div
           style={{
             display: 'grid',
@@ -147,37 +101,21 @@ export default function FinancialTeaser() {
             gap: 'var(--space-5)',
           }}
         >
-          {coming.map((product) => (
+          {fintechSolutions.map((product) => (
             <div
               key={product.title}
               style={{
-                background: 'rgba(243,239,229,0.04)',
-                border: '1px solid rgba(243,239,229,0.09)',
+                background: product.title === 'GRC Application'
+                  ? 'rgba(13,110,126,0.16)'
+                  : 'rgba(243,239,229,0.04)',
+                border: product.title === 'GRC Application'
+                  ? '1px solid rgba(107,179,192,0.36)'
+                  : '1px solid rgba(243,239,229,0.09)',
                 borderRadius: 'var(--radius-xl)',
                 padding: 'var(--space-6)',
-                opacity: 0.55,
                 position: 'relative',
               }}
             >
-              <span
-                style={{
-                  position: 'absolute',
-                  top: 'var(--space-4)',
-                  right: 'var(--space-4)',
-                  fontFamily: 'var(--font-ibm-plex-mono, var(--f-mono))',
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  color: 'var(--accent-soft)',
-                  background: 'rgba(13,110,126,0.18)',
-                  padding: '2px 7px',
-                  borderRadius: 'var(--radius-sm)',
-                }}
-              >
-                Soon
-              </span>
-
               <h3
                 style={{
                   fontSize: '18px',
@@ -192,7 +130,7 @@ export default function FinancialTeaser() {
               <p
                 style={{
                   fontSize: '13px',
-                  color: 'rgba(243,239,229,0.5)',
+                  color: 'rgba(243,239,229,0.58)',
                   lineHeight: 1.6,
                   marginBottom: 'var(--space-5)',
                 }}
@@ -210,7 +148,7 @@ export default function FinancialTeaser() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.06em',
-                      color: 'rgba(243,239,229,0.38)',
+                      color: 'rgba(243,239,229,0.48)',
                       background: 'rgba(243,239,229,0.06)',
                       padding: '2px 7px',
                       borderRadius: 'var(--radius-sm)',

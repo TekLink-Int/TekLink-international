@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google'
+import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google'
+import { SessionProvider } from 'next-auth/react'
 import './globals.css'
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -17,9 +18,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'TekLink — Maritime Ecosystem',
+  title: 'TekLink - Maritime, Deeptech and Fintech',
   description:
-    'From booking freight to chartering a vessel to acquiring one — TekLink connects every stage of the maritime journey.',
+    'TekLink builds maritime trade platforms, deeptech capability lanes, and fintech applications for operational teams.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -30,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       style={{ fontFamily: 'var(--font-ibm-plex-sans), system-ui, sans-serif' }}
     >
       <body style={{ fontFamily: 'var(--font-ibm-plex-sans), system-ui, sans-serif' }}>
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   )
