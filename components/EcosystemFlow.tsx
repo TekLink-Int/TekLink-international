@@ -5,19 +5,25 @@ import { Fragment, useEffect, useRef } from 'react'
 const steps = [
   {
     number: '01',
-    label: 'Book Freight',
-    description: 'Connect shippers with carriers for seamless cargo movement across routes.',
-    platform: 'BharatFreight',
+    label: 'Iron Ore Hedging',
+    description: 'Model exposure, hedge scenarios, and landed cost visibility before freight moves.',
+    platform: 'Iron Ore Hedging',
   },
   {
     number: '02',
+    label: 'Book Freight',
+    description: 'Connect shippers with carriers for seamless cargo movement across routes.',
+    platform: 'Freight Marketplace',
+  },
+  {
+    number: '03',
     label: 'Charter a Vessel',
     description: 'Match cargo inquiries with available vessels through structured negotiation.',
     platform: 'Ship Chartering',
   },
   {
-    number: '03',
-    label: 'Acquire a Vessel',
+    number: '04',
+    label: 'Assess Feasibility',
     description: 'Model the full financial feasibility of vessel ownership before you commit.',
     platform: 'Ship Feasibility',
   },
@@ -116,7 +122,7 @@ export default function EcosystemFlow() {
               lineHeight: 1.1,
             }}
           >
-            Three Platforms. One Ecosystem.
+            Four Platforms. One Ecosystem.
           </h2>
         </div>
 
@@ -203,7 +209,7 @@ export default function EcosystemFlow() {
               </div>
 
               {/* Connector */}
-              {i < 2 && (
+              {i < steps.length - 1 && (
                 <div
                   key={`conn-${i}`}
                   className="flow-connector"

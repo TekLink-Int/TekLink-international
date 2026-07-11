@@ -31,9 +31,12 @@ export default function Hero() {
         minHeight: '100vh',
         background: 'var(--navy)',
         backgroundImage: `
-          radial-gradient(ellipse at 68% 38%, rgba(13,110,126,0.16) 0%, transparent 58%),
-          radial-gradient(ellipse at 18% 72%, rgba(13,110,126,0.09) 0%, transparent 48%)
+          linear-gradient(rgba(6,18,30,0.58), rgba(6,18,30,0.7)),
+          url('/hero-background.png')
         `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

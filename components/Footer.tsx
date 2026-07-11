@@ -1,7 +1,7 @@
 'use client'
 
 const platforms = [
-  { label: 'BharatFreight', href: 'https://freight.teklink.com.au' },
+  { label: 'Freight Marketplace', href: 'https://freight.teklink.com.au' },
   { label: 'Ship Chartering', href: 'https://shipchartering.teklink.com.au' },
   { label: 'Ship Feasibility', href: 'https://ship.feasibility.teklink.com.au' },
 ]
