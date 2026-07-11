@@ -2,9 +2,9 @@ import Link from 'next/link'
 
 const fintechSolutions = [
   {
-    title: 'OCR to ICR',
-    description: 'Invoice OCR/ICR with PO reconciliation, validation logs, and reviewer workflows.',
-    badges: ['OCR', 'ICR', 'PO Match'],
+    title: 'GRC Application',
+    description: 'Governance, risk, and compliance workflows for assessments, audit, and controls.',
+    badges: ['Governance', 'Risk', 'Compliance'],
   },
   {
     title: 'Vendor Select',
@@ -22,9 +22,9 @@ const fintechSolutions = [
     badges: ['NAV', 'Ledger', 'Portal'],
   },
   {
-    title: 'GRC Application',
-    description: 'Governance, risk, and compliance workflows for assessments, audit, and controls.',
-    badges: ['Governance', 'Risk', 'Compliance'],
+    title: 'OCR to ICR',
+    description: 'Invoice OCR/ICR with PO reconciliation, validation logs, and reviewer workflows.',
+    badges: ['OCR', 'ICR', 'PO Match'],
   },
 ]
 
@@ -105,12 +105,8 @@ export default function FinancialTeaser() {
             <div
               key={product.title}
               style={{
-                background: product.title === 'GRC Application'
-                  ? 'rgba(13,110,126,0.16)'
-                  : 'rgba(243,239,229,0.04)',
-                border: product.title === 'GRC Application'
-                  ? '1px solid rgba(107,179,192,0.36)'
-                  : '1px solid rgba(243,239,229,0.09)',
+                background: 'rgba(243,239,229,0.04)',
+                border: '1px solid rgba(243,239,229,0.09)',
                 borderRadius: 'var(--radius-xl)',
                 padding: 'var(--space-6)',
                 position: 'relative',

@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 
 const solutions: IndustrySolution[] = [
   {
-    eyebrow: 'Document Intelligence',
-    title: 'OCR to ICR',
+    eyebrow: 'Governance',
+    title: 'GRC Application',
     description:
-      'Invoice OCR/ICR with purchase-order reconciliation, validation logs, matching logic, and finance-team review workflows.',
-    badges: ['OCR', 'ICR', 'PO Match', 'Review'],
-    audience: 'For finance operations',
+      'Governance, risk and compliance workflows for deal assessment, risk registers, audit evidence, and controlled review paths.',
+    badges: ['Governance', 'Risk', 'Compliance'],
+    audience: 'For control teams',
   },
   {
     eyebrow: 'Procurement Finance',
@@ -41,13 +41,12 @@ const solutions: IndustrySolution[] = [
     audience: 'For asset managers',
   },
   {
-    eyebrow: 'Governance',
-    title: 'GRC Application',
+    eyebrow: 'Document Intelligence',
+    title: 'OCR to ICR',
     description:
-      'Governance, risk and compliance workflows for deal assessment, risk registers, audit evidence, and controlled review paths.',
-    badges: ['Governance', 'Risk', 'Compliance'],
-    audience: 'For control teams',
-    highlight: true,
+      'Invoice OCR/ICR with purchase-order reconciliation, validation logs, matching logic, and finance-team review workflows.',
+    badges: ['OCR', 'ICR', 'PO Match', 'Review'],
+    audience: 'For finance operations',
   },
 ]
 
