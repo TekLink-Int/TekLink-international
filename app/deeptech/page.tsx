@@ -46,7 +46,6 @@ const solutions: IndustrySolution[] = [
 export default function DeeptechPage() {
   return (
     <IndustryPage
-      eyebrow="Page 2"
       title="Deeptech"
       accent="solutions"
       description="A lean view of TekLink's deeptech lanes, with drones kept as the visible highlight and the rest presented as focused capability areas."

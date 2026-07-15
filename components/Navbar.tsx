@@ -7,9 +7,10 @@ import { useSession } from 'next-auth/react'
 import { login, logout } from '@/app/actions'
 
 const navItems = [
-  { label: 'Maritime & Trade', href: '/' },
+  { label: 'Home', href: '/' },
+  { label: 'Maritime', href: '/maritime' },
   { label: 'Deeptech', href: '/deeptech' },
-  { label: 'Fintech Solutions', href: '/fintech' },
+  { label: 'Fintech', href: '/fintech' },
 ]
 
 export default function Navbar() {
@@ -47,7 +48,8 @@ export default function Navbar() {
       }}
     >
       {/* Logo */}
-      <div
+      <Link
+        href="/"
         className="teklink-logo"
         style={{
           fontFamily: 'var(--font-ibm-plex-sans, var(--f-sans))',
@@ -56,10 +58,11 @@ export default function Navbar() {
           letterSpacing: '-0.4px',
           color: 'var(--text-on-navy)',
           userSelect: 'none',
+          textDecoration: 'none',
         }}
       >
         Tek<span style={{ color: 'var(--accent-soft)' }}>Link</span>
-      </div>
+      </Link>
 
       {/* Nav items */}
       <div

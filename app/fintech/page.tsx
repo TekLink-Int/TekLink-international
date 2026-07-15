@@ -53,7 +53,6 @@ const solutions: IndustrySolution[] = [
 export default function FintechPage() {
   return (
     <IndustryPage
-      eyebrow="Page 3"
       title="Fintech"
       accent="solutions"
       description="A concise portfolio view of the finance products found in the local TekLink workspace, renamed and grouped for the public site."

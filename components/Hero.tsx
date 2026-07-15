@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 
 export default function Hero() {
@@ -7,10 +9,12 @@ export default function Hero() {
 
   useEffect(() => {
     let ctx: { revert?: () => void } | undefined
+    let fallback: ReturnType<typeof setTimeout> | undefined
     const init = async () => {
       const { default: gsap } = await import('gsap')
       ctx = gsap.context(() => {
-        gsap.from('[data-hero-el]', {
+        const els = gsap.utils.toArray<HTMLElement>('[data-hero-el]')
+        gsap.from(els, {
           opacity: 0,
           y: 32,
           duration: 0.9,
@@ -18,10 +22,19 @@ export default function Hero() {
           ease: 'power3.out',
           delay: 0.15,
         })
+        // Safety net: if the tab is backgrounded/throttled mid-animation, requestAnimationFrame
+        // can stall indefinitely and leave this content stuck near-invisible. Force it visible.
+        fallback = setTimeout(() => {
+          gsap.killTweensOf(els)
+          gsap.set(els, { clearProps: 'opacity,transform' })
+        }, 2200)
       }, containerRef)
     }
     init()
-    return () => ctx?.revert?.()
+    return () => {
+      clearTimeout(fallback)
+      ctx?.revert?.()
+    }
   }, [])
 
   return (
@@ -30,13 +43,6 @@ export default function Hero() {
       style={{
         minHeight: '100vh',
         background: 'var(--navy)',
-        backgroundImage: `
-          linear-gradient(rgba(6,18,30,0.58), rgba(6,18,30,0.7)),
-          url('/hero-background.png')
-        `,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -47,10 +53,30 @@ export default function Hero() {
         textAlign: 'center',
       }}
     >
+      {/* Background photo, optimized/resized by next/image instead of a raw CSS url() */}
+      <Image
+        src="/hero-background.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectFit: 'cover', zIndex: 0 }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(rgba(6,18,30,0.58), rgba(6,18,30,0.7))',
+          zIndex: 1,
+        }}
+      />
+
       {/* Eyebrow */}
       <div
         data-hero-el
         style={{
+          position: 'relative',
+          zIndex: 2,
           display: 'inline-flex',
           alignItems: 'center',
           gap: 'var(--space-2)',
@@ -83,6 +109,8 @@ export default function Hero() {
       <h1
         data-hero-el
         style={{
+          position: 'relative',
+          zIndex: 2,
           fontFamily: 'var(--font-ibm-plex-sans, var(--f-sans))',
           fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
           fontWeight: 700,
@@ -101,6 +129,8 @@ export default function Hero() {
       <p
         data-hero-el
         style={{
+          position: 'relative',
+          zIndex: 2,
           fontSize: '18px',
           fontWeight: 400,
           color: 'rgba(243,239,229,0.62)',
@@ -117,6 +147,8 @@ export default function Hero() {
       <div
         data-hero-el
         style={{
+          position: 'relative',
+          zIndex: 2,
           display: 'flex',
           gap: 'var(--space-4)',
           flexWrap: 'wrap',
@@ -150,8 +182,8 @@ export default function Hero() {
           Explore Platforms
         </a>
 
-        <a
-          href="#collaborate"
+        <Link
+          href="/#collaborate"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -175,7 +207,7 @@ export default function Hero() {
           }}
         >
           Collaborate with Us
-        </a>
+        </Link>
       </div>
 
       {/* Scroll hint */}
@@ -183,6 +215,7 @@ export default function Hero() {
         data-hero-el
         style={{
           position: 'absolute',
+          zIndex: 2,
           bottom: '148px',
           left: '50%',
           transform: 'translateX(-50%)',
@@ -217,6 +250,7 @@ export default function Hero() {
       <div
         style={{
           position: 'absolute',
+          zIndex: 2,
           bottom: 0,
           left: 0,
           right: 0,

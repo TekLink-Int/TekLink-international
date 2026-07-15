@@ -12,7 +12,7 @@ export type IndustrySolution = {
 }
 
 type IndustryPageProps = {
-  eyebrow: string
+  eyebrow?: string
   title: string
   accent: string
   description: string
@@ -42,19 +42,21 @@ export default function IndustryPage({
         }}
       >
         <div style={{ maxWidth: '72rem', margin: '0 auto' }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-ibm-plex-mono, var(--f-mono))',
-              fontSize: '11px',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.14em',
-              color: 'var(--accent-soft)',
-              marginBottom: 'var(--space-5)',
-            }}
-          >
-            {eyebrow}
-          </p>
+          {eyebrow && (
+            <p
+              style={{
+                fontFamily: 'var(--font-ibm-plex-mono, var(--f-mono))',
+                fontSize: '11px',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.14em',
+                color: 'var(--accent-soft)',
+                marginBottom: 'var(--space-5)',
+              }}
+            >
+              {eyebrow}
+            </p>
+          )}
           <h1
             style={{
               fontFamily: 'var(--font-ibm-plex-sans, var(--f-sans))',

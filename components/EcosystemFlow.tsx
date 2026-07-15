@@ -5,9 +5,9 @@ import { Fragment, useEffect, useRef } from 'react'
 const steps = [
   {
     number: '01',
-    label: 'Iron Ore Hedging',
+    label: 'Commodity Hedging and Trading',
     description: 'Model exposure, hedge scenarios, and landed cost visibility before freight moves.',
-    platform: 'Iron Ore Hedging',
+    platform: 'Commodity Hedging and Trading',
   },
   {
     number: '02',
@@ -39,8 +39,18 @@ export default function EcosystemFlow() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger')
       gsap.registerPlugin(ScrollTrigger)
 
+      // Safety net: if requestAnimationFrame stalls (backgrounded/throttled tab) right as a
+      // trigger fires, don't leave these elements stuck mid-animation (faded / collapsed).
+      const reveal = (targets: HTMLElement[] | NodeListOf<Element>, clearProps: string) => () => {
+        setTimeout(() => {
+          gsap.killTweensOf(targets)
+          gsap.set(targets, { clearProps })
+        }, 1800)
+      }
+
       ctx = gsap.context(() => {
-        gsap.from('[data-flow-step]', {
+        const steps = gsap.utils.toArray<HTMLElement>('[data-flow-step]')
+        gsap.from(steps, {
           opacity: 0,
           y: 36,
           duration: 0.7,
@@ -49,10 +59,12 @@ export default function EcosystemFlow() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 72%',
+            onEnter: reveal(steps, 'opacity,transform'),
           },
         })
 
-        gsap.from('[data-flow-line]', {
+        const lines = gsap.utils.toArray<HTMLElement>('[data-flow-line]')
+        gsap.from(lines, {
           scaleX: 0,
           transformOrigin: 'left center',
           duration: 1.1,
@@ -61,10 +73,12 @@ export default function EcosystemFlow() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 68%',
+            onEnter: reveal(lines, 'transform'),
           },
         })
 
-        gsap.from('[data-flow-header]', {
+        const header = gsap.utils.toArray<HTMLElement>('[data-flow-header]')
+        gsap.from(header, {
           opacity: 0,
           y: 24,
           duration: 0.7,
@@ -72,6 +86,7 @@ export default function EcosystemFlow() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 80%',
+            onEnter: reveal(header, 'opacity,transform'),
           },
         })
       }, sectionRef)
@@ -122,7 +137,7 @@ export default function EcosystemFlow() {
               lineHeight: 1.1,
             }}
           >
-            Four Platforms. One Ecosystem.
+            This platform, which is a portfolio of solutions, is a full ecosystem.
           </h2>
         </div>
 

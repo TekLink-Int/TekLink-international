@@ -18,9 +18,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'TekLink - Maritime, Deeptech and Fintech',
+  title: 'TekLink - Engineering Platforms Across Maritime, Fintech and Deeptech',
   description:
-    'TekLink builds maritime trade platforms, deeptech capability lanes, and fintech applications for operational teams.',
+    'TekLink is an engineering company building real solutions across maritime trade, fintech, and deeptech on one platform.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
