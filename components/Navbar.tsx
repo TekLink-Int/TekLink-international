@@ -15,6 +15,7 @@ const navItems = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [hash, setHash] = useState('')
   const pathname = usePathname()
   const { data: session } = useSession()
 
@@ -23,6 +24,15 @@ export default function Navbar() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    const syncHash = () => setHash(window.location.hash)
+    syncHash()
+    window.addEventListener('hashchange', syncHash)
+    return () => window.removeEventListener('hashchange', syncHash)
+  }, [pathname])
+
+  const collaborateActive = pathname === '/' && hash === '#collaborate'
 
   return (
     <nav
@@ -70,12 +80,15 @@ export default function Navbar() {
         style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)', flexWrap: 'nowrap' }}
       >
         {navItems.map((item) => {
-          const active = pathname === item.href
+          const active = item.href === '/' ? pathname === '/' && !collaborateActive : pathname === item.href
 
           return (
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => {
+                if (item.href === '/') setHash('')
+              }}
               style={{
                 fontSize: '14px',
                 fontWeight: 500,
@@ -108,12 +121,25 @@ export default function Navbar() {
           style={{
             fontSize: '14px',
             fontWeight: 500,
-            color: 'rgba(243,239,229,0.65)',
-            transition: 'color 0.2s',
+            color: collaborateActive ? 'var(--accent-soft)' : 'rgba(243,239,229,0.65)',
+            borderBottom: collaborateActive ? '1px solid var(--accent-soft)' : '1px solid transparent',
+            paddingBottom: '2px',
+            transition: 'color 0.2s, border-color 0.2s',
             whiteSpace: 'nowrap',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-on-navy)')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(243,239,229,0.65)')}
+          onClick={() => setHash('#collaborate')}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--text-on-navy)'
+            e.currentTarget.style.borderColor = collaborateActive
+              ? 'var(--accent-soft)'
+              : 'rgba(243,239,229,0.32)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = collaborateActive
+              ? 'var(--accent-soft)'
+              : 'rgba(243,239,229,0.65)'
+            e.currentTarget.style.borderColor = collaborateActive ? 'var(--accent-soft)' : 'transparent'
+          }}
         >
           Collaborate
         </Link>

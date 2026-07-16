@@ -25,7 +25,7 @@ const steps = [
     number: '04',
     label: 'Assess Feasibility',
     description: 'Model the full financial feasibility of vessel ownership before you commit.',
-    platform: 'Ship Feasibility',
+    platform: 'Bareboat chartering and ship owning feasibility',
   },
 ]
 

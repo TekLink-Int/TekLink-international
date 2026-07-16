@@ -8,7 +8,7 @@ export const maritimeSolutions: Solution[] = [
       'A B2B freight marketplace connecting shippers and carriers with real-time tracking, SAP/ERP integration, and a full document management suite.',
     badges: ['Shipper Dashboard', 'Carrier Portal', 'Live Tracking', 'ERP Integration'],
     audience: 'For shippers & carriers',
-    url: 'https://freight.teklink.com.au',
+    url: 'https://freight.teklinkinternational.com',
     previewImages: [
       { src: '/freight-dashboard.png', alt: 'Freight Marketplace dashboard screenshot', label: 'Dashboard' },
       { src: '/freight-board.png', alt: 'Freight Marketplace freight board screenshot', label: 'Freight Board' },
@@ -22,7 +22,7 @@ export const maritimeSolutions: Solution[] = [
       'Multi-role chartering platform for managing cargo inquiries, vessel matching, structured negotiations, and fixture tracking — built for the full chartering workflow.',
     badges: ['Charterer', 'Shipowner', 'Broker', 'Admin'],
     audience: 'For charterers & owners',
-    url: 'https://shipchartering.teklink.com.au',
+    url: 'https://chartering.teklinkinternational.com',
     previewImages: [
       { src: '/chartering-dashboard.png', alt: 'Ship Chartering dashboard screenshot', label: 'Dashboard' },
       { src: '/chartering-inquiry.png', alt: 'Ship Chartering cargo inquiry screenshot', label: 'Cargo Inquiry' },
@@ -31,16 +31,28 @@ export const maritimeSolutions: Solution[] = [
   },
   {
     eyebrow: 'Vessel Acquisition',
-    title: 'Ship Feasibility',
+    title: 'Bareboat chartering and ship owning feasibility',
     description:
       'Financial feasibility analysis for vessel purchases. Model acquisition costs, operating economics, and return scenarios — then export a full report before you commit.',
     badges: ['Cost Modelling', 'ROI Analysis', 'PDF Export'],
     audience: 'For buyers & investors',
-    url: 'https://ship.feasibility.teklink.com.au',
+    url: 'https://feasibility.teklinkinternational.com',
     previewImages: [
-      { src: '/feasibility-features.png', alt: 'Ship Feasibility feature overview screenshot', label: 'Feature Set' },
-      { src: '/feasibility-score-breakdown.png', alt: 'Ship Feasibility score breakdown screenshot', label: 'Score Breakdown' },
-      { src: '/feasibility-cash-flow-risk.png', alt: 'Ship Feasibility cash flow and risk screenshot', label: 'Cash Flow' },
+      {
+        src: '/feasibility-features.png',
+        alt: 'Bareboat chartering and ship owning feasibility feature overview screenshot',
+        label: 'Feature Set',
+      },
+      {
+        src: '/feasibility-score-breakdown.png',
+        alt: 'Bareboat chartering and ship owning feasibility score breakdown screenshot',
+        label: 'Score Breakdown',
+      },
+      {
+        src: '/feasibility-cash-flow-risk.png',
+        alt: 'Bareboat chartering and ship owning feasibility cash flow and risk screenshot',
+        label: 'Cash Flow',
+      },
     ],
   },
   {
@@ -50,8 +62,7 @@ export const maritimeSolutions: Solution[] = [
       'Commodity exposure workspace for cargo economics, hedge scenarios, landed cost analysis, and effective cost visibility.',
     badges: ['Exposure', 'Hedging', 'Scenario Analysis'],
     audience: 'For operators & traders',
-    url: '/#collaborate',
-    cta: 'Discuss Platform',
+    url: 'https://trading.teklinkinternational.com',
     previewImages: [
       { src: '/iron-ore-exposure.png', alt: 'Commodity Hedging and Trading exposure dashboard screenshot', label: 'Exposure' },
       { src: '/iron-ore-paper-hedge.png', alt: 'Commodity Hedging and Trading paper hedge desk screenshot', label: 'Paper Hedge' },

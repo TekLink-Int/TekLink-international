@@ -3,13 +3,12 @@ import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import EcosystemFlow from '@/components/EcosystemFlow'
 import SolutionCards from '@/components/SolutionCards'
-import About from '@/components/About'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'TekLink - Maritime & Trade',
   description:
-    'The maritime ecosystem end to end — freight, chartering, vessel feasibility, and commodity hedging and trading, connected in one suite.',
+    'The maritime ecosystem end to end — freight, chartering, bareboat chartering and ship owning feasibility, and commodity hedging and trading, connected in one suite.',
 }
 
 export default function MaritimePage() {
@@ -19,7 +18,6 @@ export default function MaritimePage() {
       <Hero />
       <EcosystemFlow />
       <SolutionCards />
-      <About />
       <Footer />
     </main>
   )

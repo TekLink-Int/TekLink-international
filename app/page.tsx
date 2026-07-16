@@ -1,7 +1,6 @@
 import Navbar from '@/components/Navbar'
 import HomeHero from '@/components/HomeHero'
 import SolutionsCatalog from '@/components/SolutionsCatalog'
-import CompanyIntro from '@/components/CompanyIntro'
 import CollaborateForm from '@/components/CollaborateForm'
 import Footer from '@/components/Footer'
 
@@ -11,7 +10,6 @@ export default function Home() {
       <Navbar />
       <HomeHero />
       <SolutionsCatalog />
-      <CompanyIntro />
       <CollaborateForm />
       <Footer />
     </main>

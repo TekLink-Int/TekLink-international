@@ -72,36 +72,34 @@ export default function HomeHero() {
         `}</style>
 
         {/* Left: positioning */}
-        <div>
+        <div style={{ maxWidth: '44rem' }}>
           <h1
             data-hero-el
             style={{
               fontFamily: 'var(--font-ibm-plex-sans, var(--f-sans))',
-              fontSize: 'clamp(2.4rem, 4.6vw, 3.6rem)',
+              fontSize: 'clamp(2rem, 4vw, 3.2rem)',
               fontWeight: 700,
               color: 'var(--text-on-navy)',
-              lineHeight: 1.08,
-              letterSpacing: '-0.6px',
+              lineHeight: 1.15,
+              letterSpacing: '-0.5px',
               marginBottom: 'var(--space-6)',
             }}
           >
-            We engineer across every discipline —{' '}
-            <span style={{ color: 'var(--accent-soft)' }}>software included.</span>
+            This is a platform for everything end-to-end related to Shipping and Ports, core and
+            connected.
           </h1>
 
           <p
             data-hero-el
             style={{
-              fontSize: '18px',
-              fontWeight: 400,
-              color: 'rgba(243,239,229,0.62)',
-              maxWidth: '38rem',
-              lineHeight: 1.65,
+              fontSize: 'clamp(1.15rem, 2vw, 1.45rem)',
+              fontWeight: 500,
+              color: 'rgba(243,239,229,0.78)',
+              lineHeight: 1.55,
+              maxWidth: '40rem',
             }}
           >
-            <strong style={{ color: 'var(--text-on-navy)', fontWeight: 600 }}>Solutions:</strong> real
-            solutions for real problems, delivered on one platform spanning technologies across
-            maritime, fintech, and deeptech.
+            We are engineering and delivering real Solutions for real Problems.
           </p>
         </div>
 

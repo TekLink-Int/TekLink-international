@@ -13,8 +13,7 @@ const fintechSolutions: Solution[] = [
       'Governance, risk and compliance workflows for deal assessment, risk registers, audit evidence, and controlled review paths.',
     badges: ['Governance', 'Risk', 'Compliance'],
     audience: 'For control teams',
-    url: '/fintech',
-    cta: 'View in Fintech',
+    url: 'https://risk.teklinkinternational.com',
   },
   {
     eyebrow: 'Procurement Finance',
@@ -23,8 +22,7 @@ const fintechSolutions: Solution[] = [
       'SAP PO vendor-selection workflow for comparing suppliers, structuring approvals, and keeping vendor decisions auditable.',
     badges: ['SAP PO', 'Vendors', 'Approvals'],
     audience: 'For procurement teams',
-    url: '/fintech',
-    cta: 'View in Fintech',
+    url: 'https://vendor.teklinkinternational.com',
   },
   {
     eyebrow: 'Commercial Models',
@@ -33,8 +31,7 @@ const fintechSolutions: Solution[] = [
       'A finance calculator workspace for margins, ROI, GST, commissions, loans, investments, and operating economics.',
     badges: ['ROI', 'Margin', 'GST', 'Currency'],
     audience: 'For commercial teams',
-    url: '/fintech',
-    cta: 'View in Fintech',
+    url: 'https://calculator.teklinkinternational.com',
   },
   {
     eyebrow: 'Asset Management',
@@ -43,8 +40,7 @@ const fintechSolutions: Solution[] = [
       'Operational backbone for fund accounting, NAV, investor capital, portfolio reporting, audit trails, and secure portals.',
     badges: ['NAV', 'Ledger', 'Investors', 'Portal'],
     audience: 'For asset managers',
-    url: '/fintech',
-    cta: 'View in Fintech',
+    url: 'https://fund.teklinkinternational.com',
   },
   {
     eyebrow: 'Document Intelligence',
@@ -53,8 +49,7 @@ const fintechSolutions: Solution[] = [
       'Invoice OCR/ICR with purchase-order reconciliation, validation logs, matching logic, and finance-team review workflows.',
     badges: ['OCR', 'ICR', 'PO Match', 'Review'],
     audience: 'For finance operations',
-    url: '/fintech',
-    cta: 'View in Fintech',
+    url: 'https://ocr.teklinkinternational.com',
   },
 ]
 
@@ -151,7 +146,7 @@ export default function SolutionsCatalog() {
               lineHeight: 1.1,
             }}
           >
-            A catalog of solutions, across every platform
+            A catalogue of solutions, across every platform
           </h2>
         </div>
 
@@ -160,8 +155,7 @@ export default function SolutionsCatalog() {
             <div
               style={{
                 display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'space-between',
+                alignItems: 'center',
                 flexWrap: 'wrap',
                 gap: 'var(--space-4)',
                 marginBottom: 'var(--space-6)',
@@ -169,10 +163,10 @@ export default function SolutionsCatalog() {
             >
               <h3
                 style={{
-                  fontSize: '22px',
+                  fontSize: '28px',
                   fontWeight: 700,
                   color: 'var(--text-primary)',
-                  letterSpacing: '-0.3px',
+                  letterSpacing: '-0.4px',
                 }}
               >
                 {group.label}
@@ -186,6 +180,8 @@ export default function SolutionsCatalog() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '4px',
+                  marginTop: '4px',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 View all in {group.label}

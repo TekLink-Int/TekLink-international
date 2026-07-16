@@ -156,7 +156,7 @@ export default function SolutionCard({ solution }: { solution: Solution }) {
             gap: '4px',
           }}
         >
-          {solution.cta ?? 'Open Platform'}
+          {solution.cta ?? 'Log in'}
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
             <path
               d="M2.5 7h9M8 3.5l3.5 3.5-3.5 3.5"
