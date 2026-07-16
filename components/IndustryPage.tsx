@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 
@@ -32,16 +33,28 @@ export default function IndustryPage({
       <section
         style={{
           background: 'var(--navy)',
-          backgroundImage: `
-            radial-gradient(ellipse at 72% 34%, rgba(13,110,126,0.17) 0%, transparent 58%),
-            radial-gradient(ellipse at 18% 78%, rgba(13,110,126,0.08) 0%, transparent 48%)
-          `,
           padding: '128px var(--space-8) 78px',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
-        <div style={{ maxWidth: '72rem', margin: '0 auto' }}>
+        <Image
+          src="/hero-background.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          style={{ objectFit: 'cover', zIndex: 0 }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(rgba(6,18,30,0.58), rgba(6,18,30,0.7))',
+            zIndex: 1,
+          }}
+        />
+        <div style={{ maxWidth: '72rem', margin: '0 auto', position: 'relative', zIndex: 2 }}>
           {eyebrow && (
             <p
               style={{
@@ -85,6 +98,7 @@ export default function IndustryPage({
         <div
           style={{
             position: 'absolute',
+            zIndex: 2,
             bottom: 0,
             left: 0,
             right: 0,
