@@ -87,3 +87,13 @@ a { text-decoration: none; color: inherit; }
     font-size: 12px !important;
   }
 }
+
+@media (max-width: 880px) {
+  .demurrage-estimator-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .demurrage-estimator-fields {
+    grid-template-columns: 1fr !important;
+  }
+}

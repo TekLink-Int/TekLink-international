@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict'
+import { createRequire } from 'node:module'
 import test from 'node:test'
 
-import { calculateDemurrageExposure } from '../lib/demurrageExposure.ts'
+const require = createRequire(import.meta.url)
+const { calculateDemurrageExposure } = require('../lib/demurrageExposure.ts')
 
 test('returns zero exposure when time stays within laytime', () => {
   const result = calculateDemurrageExposure({
@@ -41,5 +43,19 @@ test('floors net counted time at zero when excludable hours exceed actual time',
   assert.equal(result.netUsedHours, 0)
   assert.equal(result.excessHours, 0)
   assert.equal(result.estimatedDemurrage, 0)
+  assert.equal(result.costPerTon, null)
+})
+
+test('supports decimal values for hours and rates', () => {
+  const result = calculateDemurrageExposure({
+    allowedLaytimeHours: 36.5,
+    actualTimeUsedHours: 50.75,
+    demurrageRatePerDay: 19500.5,
+    excludableHours: 2.25,
+  })
+
+  assert.equal(result.netUsedHours, 48.5)
+  assert.equal(result.excessHours, 12)
+  assert.equal(result.estimatedDemurrage, 9750.25)
   assert.equal(result.costPerTon, null)
 })

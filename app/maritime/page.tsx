@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import EcosystemFlow from '@/components/EcosystemFlow'
+import DemurrageExposureEstimator from '@/components/DemurrageExposureEstimator'
 import SolutionCards from '@/components/SolutionCards'
 import Footer from '@/components/Footer'
 
@@ -17,6 +18,7 @@ export default function MaritimePage() {
       <Navbar />
       <Hero />
       <EcosystemFlow />
+      <DemurrageExposureEstimator />
       <SolutionCards />
       <Footer />
     </main>
