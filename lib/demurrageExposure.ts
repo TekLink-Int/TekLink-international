@@ -6,11 +6,22 @@ export type DemurrageExposureInput = {
   cargoQuantityTons?: number
 }
 
+export type TimeUnit = 'hours' | 'days'
+
 export type DemurrageExposureResult = {
   netUsedHours: number
   excessHours: number
   estimatedDemurrage: number
   costPerTon: number | null
+}
+
+export function convertDurationToHours(value: number, unit: TimeUnit): number {
+  return unit === 'days' ? value * 24 : value
+}
+
+export function convertDurationValue(value: number, from: TimeUnit, to: TimeUnit): number {
+  if (from === to) return value
+  return from === 'hours' ? value / 24 : value * 24
 }
 
 export function calculateDemurrageExposure({

@@ -3,7 +3,12 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
-import { calculateDemurrageExposure } from '@/lib/demurrageExposure'
+import {
+  calculateDemurrageExposure,
+  convertDurationToHours,
+  convertDurationValue,
+  type TimeUnit,
+} from '@/lib/demurrageExposure'
 
 const inputBase: React.CSSProperties = {
   width: '100%',
@@ -19,37 +24,59 @@ const inputBase: React.CSSProperties = {
 }
 
 const initialFields = {
-  allowedLaytimeHours: '',
-  actualTimeUsedHours: '',
+  portName: '',
+  allowedLaytime: '24',
+  actualTimeUsed: '',
   demurrageRatePerDay: '',
-  excludableHours: '',
+  excludableTime: '',
   cargoQuantityTons: '',
 }
 
 type FieldName = keyof typeof initialFields
+type NumericFieldName = Exclude<FieldName, 'portName'>
 
 export default function DemurrageExposureEstimator() {
   const [fields, setFields] = useState(initialFields)
+  const [timeUnit, setTimeUnit] = useState<TimeUnit>('hours')
 
   const hasRequiredInputs = Boolean(
-    fields.allowedLaytimeHours && fields.actualTimeUsedHours && fields.demurrageRatePerDay
+    fields.allowedLaytime && fields.actualTimeUsed && fields.demurrageRatePerDay
   )
 
   const estimate = hasRequiredInputs
     ? calculateDemurrageExposure({
-        allowedLaytimeHours: Number(fields.allowedLaytimeHours),
-        actualTimeUsedHours: Number(fields.actualTimeUsedHours),
+        allowedLaytimeHours: convertDurationToHours(Number(fields.allowedLaytime), timeUnit),
+        actualTimeUsedHours: convertDurationToHours(Number(fields.actualTimeUsed), timeUnit),
         demurrageRatePerDay: Number(fields.demurrageRatePerDay),
-        excludableHours: fields.excludableHours ? Number(fields.excludableHours) : undefined,
+        excludableHours: fields.excludableTime
+          ? convertDurationToHours(Number(fields.excludableTime), timeUnit)
+          : undefined,
         cargoQuantityTons: fields.cargoQuantityTons ? Number(fields.cargoQuantityTons) : undefined,
       })
     : null
 
-  const handleFieldChange = (field: FieldName) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFieldChange =
+    (field: NumericFieldName) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextValue = event.target.value
     if (nextValue === '' || /^\d*\.?\d*$/.test(nextValue)) {
       setFields((current) => ({ ...current, [field]: nextValue }))
     }
+  }
+
+  const handleTextFieldChange = (field: 'portName') => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFields((current) => ({ ...current, [field]: event.target.value }))
+  }
+
+  const switchTimeUnit = (nextUnit: TimeUnit) => {
+    if (nextUnit === timeUnit) return
+
+    setFields((current) => ({
+      ...current,
+      allowedLaytime: convertFieldValue(current.allowedLaytime, timeUnit, nextUnit),
+      actualTimeUsed: convertFieldValue(current.actualTimeUsed, timeUnit, nextUnit),
+      excludableTime: convertFieldValue(current.excludableTime, timeUnit, nextUnit),
+    }))
+    setTimeUnit(nextUnit)
   }
 
   return (
@@ -120,6 +147,74 @@ export default function DemurrageExposureEstimator() {
             </p>
 
             <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: 'var(--space-4)',
+                marginBottom: 'var(--space-6)',
+              }}
+            >
+              <div>
+                <p
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    color: 'var(--text-primary)',
+                    marginBottom: '8px',
+                  }}
+                >
+                  Time basis
+                </p>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    background: 'var(--sunken)',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: '4px',
+                  }}
+                >
+                  {(['hours', 'days'] as TimeUnit[]).map((unit) => {
+                    const active = timeUnit === unit
+                    return (
+                      <button
+                        key={unit}
+                        type="button"
+                        onClick={() => switchTimeUnit(unit)}
+                        style={{
+                          padding: '8px 18px',
+                          borderRadius: 'var(--radius-md)',
+                          fontSize: '13px',
+                          fontWeight: 600,
+                          border: 'none',
+                          cursor: 'pointer',
+                          background: active ? 'var(--accent)' : 'transparent',
+                          color: active ? '#fff' : 'var(--text-secondary)',
+                          transition: 'background 0.2s, color 0.2s',
+                        }}
+                      >
+                        {unit === 'hours' ? 'Hours' : 'Days'}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <p
+                style={{
+                  fontSize: '13px',
+                  color: 'var(--text-muted)',
+                  lineHeight: 1.6,
+                  maxWidth: '18rem',
+                }}
+              >
+                The commercial rate stays daily. This switch only changes how you
+                enter time values.
+              </p>
+            </div>
+
+            <div
               className="demurrage-estimator-fields"
               style={{
                 display: 'grid',
@@ -128,28 +223,39 @@ export default function DemurrageExposureEstimator() {
               }}
             >
               <EstimatorField
-                id="allowed-laytime-hours"
-                label="Allowed laytime (hours)"
-                value={fields.allowedLaytimeHours}
-                onChange={handleFieldChange('allowedLaytimeHours')}
+                id="port-name"
+                label="Port / terminal"
+                value={fields.portName}
+                onChange={handleTextFieldChange('portName')}
+                hint="Optional. Use this to tie the daily rate and estimate to a specific port or terminal."
+                type="text"
+                fullWidth
               />
               <EstimatorField
-                id="actual-time-used-hours"
-                label="Actual time used (hours)"
-                value={fields.actualTimeUsedHours}
-                onChange={handleFieldChange('actualTimeUsedHours')}
+                id="allowed-laytime"
+                label={`Allowed laytime (${timeUnit})`}
+                value={fields.allowedLaytime}
+                onChange={handleFieldChange('allowedLaytime')}
+                hint={timeUnit === 'hours' ? 'Defaults to 24 hours.' : 'Switch back to hours if your laytime is easier to enter that way.'}
+              />
+              <EstimatorField
+                id="actual-time-used"
+                label={`Actual time used (${timeUnit})`}
+                value={fields.actualTimeUsed}
+                onChange={handleFieldChange('actualTimeUsed')}
               />
               <EstimatorField
                 id="demurrage-rate-per-day"
-                label="Demurrage rate (per day)"
+                label="Port demurrage rate (per day)"
                 value={fields.demurrageRatePerDay}
                 onChange={handleFieldChange('demurrageRatePerDay')}
+                hint="Enter the applicable daily rate for the port or terminal you are estimating."
               />
               <EstimatorField
-                id="excludable-hours"
-                label="Excludable hours"
-                value={fields.excludableHours}
-                onChange={handleFieldChange('excludableHours')}
+                id="excludable-time"
+                label={`Excludable time (${timeUnit})`}
+                value={fields.excludableTime}
+                onChange={handleFieldChange('excludableTime')}
                 hint="Optional. Use for weather, stoppages, or time you do not want counted in this early estimate."
               />
               <EstimatorField
@@ -260,11 +366,20 @@ export default function DemurrageExposureEstimator() {
                       gap: 'var(--space-3)',
                     }}
                   >
-                    <ResultRow label="Net counted time" value={`${formatAmount(estimate.netUsedHours)} hours`} />
-                    <ResultRow label="Excess laytime" value={`${formatAmount(estimate.excessHours)} hours`} />
+                    {fields.portName && (
+                      <ResultRow label="Port / terminal" value={fields.portName} />
+                    )}
+                    <ResultRow
+                      label="Net counted time"
+                      value={formatDuration(estimate.netUsedHours, timeUnit)}
+                    />
+                    <ResultRow
+                      label="Excess laytime"
+                      value={formatDuration(estimate.excessHours, timeUnit)}
+                    />
                     <ResultRow
                       label="Formula"
-                      value={`${fields.actualTimeUsedHours || '0'} - ${fields.excludableHours || '0'} -> ${formatAmount(estimate.netUsedHours)} hours`}
+                      value={`${fields.actualTimeUsed || '0'} - ${fields.excludableTime || '0'} -> ${formatDuration(estimate.netUsedHours, timeUnit)}`}
                     />
                     {estimate.costPerTon !== null && (
                       <ResultRow
@@ -300,8 +415,8 @@ export default function DemurrageExposureEstimator() {
                       lineHeight: 1.7,
                     }}
                   >
-                    Add allowed laytime, actual time used, and a daily rate to
-                    generate an operational estimate.
+                    Add allowed laytime, actual time used, and a port-specific
+                    daily rate to generate an operational estimate.
                   </p>
                 </div>
               )}
@@ -361,15 +476,19 @@ function EstimatorField({
   value,
   onChange,
   hint,
+  type = 'decimal',
+  fullWidth = false,
 }: {
   id: string
   label: string
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   hint?: string
+  type?: 'decimal' | 'text'
+  fullWidth?: boolean
 }) {
   return (
-    <label htmlFor={id} style={{ display: 'grid', gap: '10px' }}>
+    <label htmlFor={id} style={{ display: 'grid', gap: '10px', gridColumn: fullWidth ? '1 / -1' : undefined }}>
       <span
         style={{
           fontSize: '13px',
@@ -382,7 +501,7 @@ function EstimatorField({
       <input
         id={id}
         type="text"
-        inputMode="decimal"
+        inputMode={type === 'decimal' ? 'decimal' : 'text'}
         value={value}
         onChange={onChange}
         style={inputBase}
@@ -435,4 +554,19 @@ function formatAmount(value: number) {
     minimumFractionDigits: value % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })
+}
+
+function convertFieldValue(value: string, from: TimeUnit, to: TimeUnit) {
+  if (!value) return ''
+
+  const converted = convertDurationValue(Number(value), from, to)
+  return formatAmount(converted)
+}
+
+function formatDuration(hours: number, unit: TimeUnit) {
+  if (unit === 'days') {
+    return `${formatAmount(hours / 24)} days`
+  }
+
+  return `${formatAmount(hours)} hours`
 }

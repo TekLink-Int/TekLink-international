@@ -3,7 +3,11 @@ import { createRequire } from 'node:module'
 import test from 'node:test'
 
 const require = createRequire(import.meta.url)
-const { calculateDemurrageExposure } = require('../lib/demurrageExposure.ts')
+const {
+  calculateDemurrageExposure,
+  convertDurationToHours,
+  convertDurationValue,
+} = require('../lib/demurrageExposure.ts')
 
 test('returns zero exposure when time stays within laytime', () => {
   const result = calculateDemurrageExposure({
@@ -58,4 +62,14 @@ test('supports decimal values for hours and rates', () => {
   assert.equal(result.excessHours, 12)
   assert.equal(result.estimatedDemurrage, 9750.25)
   assert.equal(result.costPerTon, null)
+})
+
+test('converts days to hours for internal calculations', () => {
+  assert.equal(convertDurationToHours(3, 'days'), 72)
+  assert.equal(convertDurationToHours(18, 'hours'), 18)
+})
+
+test('converts existing time values when switching between hours and days', () => {
+  assert.equal(convertDurationValue(24, 'hours', 'days'), 1)
+  assert.equal(convertDurationValue(2.5, 'days', 'hours'), 60)
 })
