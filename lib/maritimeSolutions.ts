@@ -69,4 +69,36 @@ export const maritimeSolutions: Solution[] = [
       { src: '/iron-ore-scenario.png', alt: 'Commodity Hedging and Trading scenario model screenshot', label: 'Scenario Model' },
     ],
   },
+  {
+    eyebrow: 'Vessel Operations',
+    title: 'Ship Operations',
+    description:
+      'Operational control layer for voyage events, onboard-to-shore coordination, task execution, maintenance visibility, and day-to-day vessel operations.',
+    badges: ['Voyage Ops', 'Tasks', 'Crew', 'Maintenance'],
+    audience: 'For operators & managers',
+    url: '/maritime',
+    cta: 'Explore Maritime',
+  },
+  {
+    eyebrow: 'Terminal Control',
+    title: 'Port Operations',
+    description:
+      'Port and terminal operations workspace for berth activity, yard coordination, gate movement, equipment visibility, and operational control across the port estate.',
+    badges: ['Berth Ops', 'Yard', 'Gate', 'Control Tower'],
+    audience: 'For ports & terminals',
+    url: '/maritime',
+    cta: 'Explore Maritime',
+  },
+  {
+    eyebrow: 'Intermodal Logistics',
+    title: 'Intermodal Booking System',
+    description:
+      'Booking workspace for coordinating cargo across vessel, rail, road, and terminal legs with unified job visibility, scheduling, and handoff tracking.',
+    badges: ['Booking', 'Rail', 'Road', 'Visibility'],
+    audience: 'For logistics teams',
+    url: '/maritime',
+    cta: 'Explore Maritime',
+  },
 ]
+
+

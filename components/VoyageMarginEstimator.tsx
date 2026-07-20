@@ -2,12 +2,7 @@
 
 import { useState } from 'react'
 
-import {
-  calculateDemurrageExposure,
-  convertDurationToHours,
-  convertDurationValue,
-  type TimeUnit,
-} from '@/lib/demurrageExposure'
+import { calculateVoyageMargin } from '@/lib/voyageMargin'
 
 const inputBase: React.CSSProperties = {
   width: '100%',
@@ -56,61 +51,47 @@ const resultCardBase: React.CSSProperties = {
 }
 
 const initialFields = {
-  portName: '',
-  allowedLaytime: '24',
-  actualTimeUsed: '',
-  demurrageRatePerDay: '',
-  excludableTime: '',
   cargoQuantityTons: '',
+  freightRatePerTon: '',
+  bunkerCost: '',
+  portCost: '',
+  delayCost: '',
+  otherVoyageCost: '',
 }
 
 type FieldName = keyof typeof initialFields
-type NumericFieldName = Exclude<FieldName, 'portName'>
 
-export default function DemurrageExposureEstimator() {
+export default function VoyageMarginEstimator() {
   const [fields, setFields] = useState(initialFields)
-  const [timeUnit, setTimeUnit] = useState<TimeUnit>('hours')
 
   const hasRequiredInputs = Boolean(
-    fields.allowedLaytime && fields.actualTimeUsed && fields.demurrageRatePerDay
+    fields.cargoQuantityTons &&
+      fields.freightRatePerTon &&
+      fields.bunkerCost &&
+      fields.portCost &&
+      fields.delayCost
   )
 
   const estimate = hasRequiredInputs
-    ? calculateDemurrageExposure({
-        allowedLaytimeHours: convertDurationToHours(Number(fields.allowedLaytime), timeUnit),
-        actualTimeUsedHours: convertDurationToHours(Number(fields.actualTimeUsed), timeUnit),
-        demurrageRatePerDay: Number(fields.demurrageRatePerDay),
-        excludableHours: fields.excludableTime
-          ? convertDurationToHours(Number(fields.excludableTime), timeUnit)
-          : undefined,
-        cargoQuantityTons: fields.cargoQuantityTons ? Number(fields.cargoQuantityTons) : undefined,
+    ? calculateVoyageMargin({
+        cargoQuantityTons: Number(fields.cargoQuantityTons),
+        freightRatePerTon: Number(fields.freightRatePerTon),
+        bunkerCost: Number(fields.bunkerCost),
+        portCost: Number(fields.portCost),
+        delayCost: Number(fields.delayCost),
+        otherVoyageCost: fields.otherVoyageCost ? Number(fields.otherVoyageCost) : undefined,
       })
     : null
 
-  const handleFieldChange =
-    (field: NumericFieldName) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const nextValue = event.target.value
-      if (nextValue === '' || /^\d*\.?\d*$/.test(nextValue)) {
-        setFields((current) => ({ ...current, [field]: nextValue }))
-      }
+  const handleFieldChange = (field: FieldName) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = event.target.value
+    if (nextValue === '' || /^\d*\.?\d*$/.test(nextValue)) {
+      setFields((current) => ({ ...current, [field]: nextValue }))
     }
-
-  const handleTextFieldChange =
-    (field: 'portName') => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFields((current) => ({ ...current, [field]: event.target.value }))
-    }
-
-  const switchTimeUnit = (nextUnit: TimeUnit) => {
-    if (nextUnit === timeUnit) return
-
-    setFields((current) => ({
-      ...current,
-      allowedLaytime: convertFieldValue(current.allowedLaytime, timeUnit, nextUnit),
-      actualTimeUsed: convertFieldValue(current.actualTimeUsed, timeUnit, nextUnit),
-      excludableTime: convertFieldValue(current.excludableTime, timeUnit, nextUnit),
-    }))
-    setTimeUnit(nextUnit)
   }
+
+  const marginColor =
+    estimate && estimate.voyageMargin < 0 ? 'rgb(240, 179, 165)' : 'var(--text-on-navy)'
 
   return (
     <article style={toolCardBase}>
@@ -126,7 +107,7 @@ export default function DemurrageExposureEstimator() {
             marginBottom: '10px',
           }}
         >
-          Operational estimator
+          Commercial estimator
         </p>
         <h3
           style={{
@@ -139,7 +120,7 @@ export default function DemurrageExposureEstimator() {
             marginBottom: '10px',
           }}
         >
-          Demurrage and Cash Leakage Estimator
+          Voyage Margin Estimator
         </h3>
         <p
           style={{
@@ -148,75 +129,8 @@ export default function DemurrageExposureEstimator() {
             lineHeight: 1.62,
           }}
         >
-          Estimate how excess laytime can turn berth delay into direct commercial
-          exposure.
-        </p>
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: 'var(--space-4)',
-        }}
-      >
-        <div>
-          <p
-            style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              marginBottom: '8px',
-            }}
-          >
-            Time basis
-          </p>
-          <div
-            style={{
-              display: 'inline-flex',
-              background: 'var(--sunken)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '3px',
-            }}
-          >
-            {(['hours', 'days'] as TimeUnit[]).map((unit) => {
-              const active = timeUnit === unit
-              return (
-                <button
-                  key={unit}
-                  type="button"
-                  onClick={() => switchTimeUnit(unit)}
-                  style={{
-                    padding: '7px 16px',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    border: 'none',
-                    cursor: 'pointer',
-                    background: active ? 'var(--accent)' : 'transparent',
-                    color: active ? '#fff' : 'var(--text-secondary)',
-                    transition: 'background 0.2s, color 0.2s',
-                  }}
-                >
-                  {unit === 'hours' ? 'Hours' : 'Days'}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        <p
-          style={{
-            fontSize: '12px',
-            color: 'var(--text-muted)',
-            lineHeight: 1.55,
-            maxWidth: '17rem',
-          }}
-        >
-          The commercial rate stays daily. This switch only changes how you enter
-          time values.
+          Estimate how freight revenue, bunker cost, port cost, and delay cost
+          affect voyage margin.
         </p>
       </div>
 
@@ -229,50 +143,41 @@ export default function DemurrageExposureEstimator() {
         }}
       >
         <EstimatorField
-          id="demurrage-port-name"
-          label="Port / terminal"
-          value={fields.portName}
-          onChange={handleTextFieldChange('portName')}
-          hint="Optional. Use this to ground the estimate in a specific port or terminal."
-          type="text"
-        />
-        <EstimatorField
-          id="allowed-laytime"
-          label={`Allowed laytime (${timeUnit})`}
-          value={fields.allowedLaytime}
-          onChange={handleFieldChange('allowedLaytime')}
-          hint={
-            timeUnit === 'hours'
-              ? 'Defaults to 24 hours.'
-              : 'Switch back to hours if your laytime is easier to enter that way.'
-          }
-        />
-        <EstimatorField
-          id="actual-time-used"
-          label={`Actual time used (${timeUnit})`}
-          value={fields.actualTimeUsed}
-          onChange={handleFieldChange('actualTimeUsed')}
-        />
-        <EstimatorField
-          id="demurrage-rate-per-day"
-          label="Port demurrage rate (per day)"
-          value={fields.demurrageRatePerDay}
-          onChange={handleFieldChange('demurrageRatePerDay')}
-          hint="Enter the applicable daily rate for the estimate."
-        />
-        <EstimatorField
-          id="excludable-time"
-          label={`Excludable time (${timeUnit})`}
-          value={fields.excludableTime}
-          onChange={handleFieldChange('excludableTime')}
-          hint="Optional. Use for stoppages or time you do not want counted in this early estimate."
-        />
-        <EstimatorField
-          id="cargo-quantity-tons"
+          id="voyage-cargo-quantity-tons"
           label="Cargo quantity (tons)"
           value={fields.cargoQuantityTons}
           onChange={handleFieldChange('cargoQuantityTons')}
-          hint="Optional. Adds a cost-per-ton view when entered."
+        />
+        <EstimatorField
+          id="voyage-freight-rate-per-ton"
+          label="Freight rate per ton"
+          value={fields.freightRatePerTon}
+          onChange={handleFieldChange('freightRatePerTon')}
+        />
+        <EstimatorField
+          id="voyage-bunker-cost"
+          label="Bunker cost"
+          value={fields.bunkerCost}
+          onChange={handleFieldChange('bunkerCost')}
+        />
+        <EstimatorField
+          id="voyage-port-cost"
+          label="Port cost"
+          value={fields.portCost}
+          onChange={handleFieldChange('portCost')}
+        />
+        <EstimatorField
+          id="voyage-delay-cost"
+          label="Delay cost"
+          value={fields.delayCost}
+          onChange={handleFieldChange('delayCost')}
+        />
+        <EstimatorField
+          id="voyage-other-cost"
+          label="Other voyage cost"
+          value={fields.otherVoyageCost}
+          onChange={handleFieldChange('otherVoyageCost')}
+          hint="Optional. Use this for any extra voyage cost you want reflected in the estimate."
         />
       </div>
 
@@ -326,7 +231,7 @@ export default function DemurrageExposureEstimator() {
               marginBottom: '12px',
             }}
           >
-            Estimated exposure
+            Estimated voyage margin
           </p>
 
           {estimate ? (
@@ -338,11 +243,11 @@ export default function DemurrageExposureEstimator() {
                   fontWeight: 700,
                   lineHeight: 1,
                   letterSpacing: '-0.06em',
-                  color: 'var(--text-on-navy)',
+                  color: marginColor,
                   marginBottom: '8px',
                 }}
               >
-                {formatAmount(estimate.estimatedDemurrage)}
+                {formatAmount(estimate.voyageMargin)}
               </p>
               <p
                 style={{
@@ -352,26 +257,25 @@ export default function DemurrageExposureEstimator() {
                   marginBottom: '12px',
                 }}
               >
-                Same currency basis as the daily rate entered above.
+                Same currency basis as the freight and voyage cost inputs above.
               </p>
 
               <div style={{ display: 'grid', gap: '10px' }}>
+                <ResultRow label="Estimated gross revenue" value={formatAmount(estimate.grossRevenue)} />
                 <ResultRow
-                  label="Estimated demurrage exposure"
-                  value={formatAmount(estimate.estimatedDemurrage)}
+                  label="Estimated total voyage cost"
+                  value={formatAmount(estimate.totalVoyageCost)}
                 />
                 <ResultRow
-                  label="Net counted time"
-                  value={formatDuration(estimate.netUsedHours, timeUnit)}
+                  label="Estimated voyage margin"
+                  value={formatAmount(estimate.voyageMargin)}
+                  valueColor={marginColor}
                 />
-                <ResultRow
-                  label="Excess laytime"
-                  value={formatDuration(estimate.excessHours, timeUnit)}
-                />
-                {estimate.costPerTon !== null && (
+                {estimate.marginPerTon !== null && (
                   <ResultRow
-                    label="Estimated cost per ton"
-                    value={formatAmount(estimate.costPerTon)}
+                    label="Estimated margin per ton"
+                    value={formatAmount(estimate.marginPerTon)}
+                    valueColor={marginColor}
                   />
                 )}
               </div>
@@ -402,8 +306,8 @@ export default function DemurrageExposureEstimator() {
                   lineHeight: 1.6,
                 }}
               >
-                Add allowed laytime, actual time used, and a port demurrage rate to
-                generate an operational estimate.
+                Add cargo quantity, freight rate, and voyage cost assumptions to
+                generate a quick commercial estimate.
               </p>
             </div>
           )}
@@ -418,8 +322,9 @@ export default function DemurrageExposureEstimator() {
             borderTop: '1px solid rgba(243,239,229,0.1)',
           }}
         >
-          This is an operational estimate for early visibility. Final demurrage
-          treatment depends on charterparty terms, records, and agreed exceptions.
+          This is an early voyage economics estimate. Final margin depends on
+          actual freight terms, bunkers, port costs, delay events, and accounting
+          treatment.
         </p>
       </div>
     </article>
@@ -432,14 +337,12 @@ function EstimatorField({
   value,
   onChange,
   hint,
-  type = 'decimal',
 }: {
   id: string
   label: string
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   hint?: string
-  type?: 'decimal' | 'text'
 }) {
   return (
     <label htmlFor={id} style={fieldShellBase}>
@@ -457,7 +360,7 @@ function EstimatorField({
       <input
         id={id}
         type="text"
-        inputMode={type === 'decimal' ? 'decimal' : 'text'}
+        inputMode="decimal"
         value={value}
         onChange={onChange}
         style={inputBase}
@@ -481,9 +384,11 @@ function EstimatorField({
 function ResultRow({
   label,
   value,
+  valueColor = 'var(--text-on-navy)',
 }: {
   label: string
   value: string
+  valueColor?: string
 }) {
   return (
     <div
@@ -501,7 +406,7 @@ function ResultRow({
         style={{
           fontSize: '13px',
           fontWeight: 600,
-          color: 'var(--text-on-navy)',
+          color: valueColor,
           textAlign: 'right',
         }}
       >
@@ -516,26 +421,4 @@ function formatAmount(value: number) {
     minimumFractionDigits: value % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })
-}
-
-function formatEditableNumber(value: number) {
-  return value.toLocaleString(undefined, {
-    useGrouping: false,
-    minimumFractionDigits: value % 1 === 0 ? 0 : 2,
-    maximumFractionDigits: 2,
-  })
-}
-
-function convertFieldValue(value: string, from: TimeUnit, to: TimeUnit) {
-  if (!value) return ''
-
-  const converted = convertDurationValue(Number(value), from, to)
-  return formatEditableNumber(converted)
-}
-
-function formatDuration(hours: number, unit: TimeUnit) {
-  const value = unit === 'days' ? hours / 24 : hours
-  const suffix = unit === 'days' ? (value === 1 ? 'day' : 'days') : value === 1 ? 'hour' : 'hours'
-
-  return `${formatAmount(value)} ${suffix}`
 }

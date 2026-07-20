@@ -51,6 +51,16 @@ const fintechSolutions: Solution[] = [
     audience: 'For finance operations',
     url: 'https://ocr.teklinkinternational.com',
   },
+  {
+    eyebrow: 'Investment Operations',
+    title: 'Portfolio and Investment Management',
+    description:
+      'Portfolio and investment management platform for asset allocation, mandate tracking, performance visibility, investor reporting, and controlled operating workflows.',
+    badges: ['Portfolio', 'Performance', 'Mandates', 'Reporting'],
+    audience: 'For investment teams',
+    url: '/fintech',
+    cta: 'Explore Fintech',
+  },
 ]
 
 const deeptechSolutions: Solution[] = [
@@ -214,3 +224,5 @@ export default function SolutionsCatalog() {
     </section>
   )
 }
+
+
