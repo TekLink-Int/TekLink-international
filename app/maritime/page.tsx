@@ -7,9 +7,9 @@ import SolutionCards from '@/components/SolutionCards'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'TekLink - Maritime & Trade',
+  title: 'Maritime Technology Platforms | TekLink',
   description:
-    'The maritime ecosystem end to end — freight, chartering, bareboat chartering and ship owning feasibility, and commodity hedging and trading, connected in one suite.',
+    'TekLink builds maritime technology platforms for freight, chartering, ship owning feasibility, commodity exposure, shipping workflows, and port operations.',
 }
 
 export default function MaritimePage() {

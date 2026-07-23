@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import IndustryPage, { type IndustrySolution } from '@/components/IndustryPage'
 
 export const metadata: Metadata = {
-  title: 'TekLink - Deeptech',
+  title: 'Deeptech Platforms | TekLink',
   description:
-    'Deeptech capability areas across drones, semiconductors, embedded systems, robotics, automation, and quantum computing.',
+    'TekLink works across deeptech capability areas including drones, embedded systems, industrial automation, robotics, semiconductors, and quantum computing.',
 }
 
 const solutions: IndustrySolution[] = [

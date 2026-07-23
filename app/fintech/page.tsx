@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import IndustryPage, { type IndustrySolution } from '@/components/IndustryPage'
 
 export const metadata: Metadata = {
-  title: 'TekLink - Fintech',
+  title: 'Fintech Platforms | TekLink',
   description:
-    'Fintech solutions across OCR/ICR reconciliation, vendor selection, commercial calculation, fund management, and GRC.',
+    'TekLink builds fintech platforms for GRC, vendor selection, commercial calculation, fund management, document intelligence, and finance operations.',
 }
 
 const solutions: IndustrySolution[] = [

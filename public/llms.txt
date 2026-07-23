@@ -1,0 +1,14 @@
+# TekLink International
+
+TekLink is a technology platform building maritime, deeptech, fintech, and related technology platforms for organisations.
+
+## Core Pages
+
+- [Homepage](https://www.teklinkinternational.com): Overview of TekLink and its technology platform work.
+- [Maritime Technology Platforms](https://www.teklinkinternational.com/maritime): Freight, chartering, vessel feasibility, shipping workflows, commodity exposure, and port operations.
+- [Fintech Platforms](https://www.teklinkinternational.com/fintech): GRC, vendor selection, commercial calculation, fund management, document intelligence, and finance operations.
+- [Deeptech Platforms](https://www.teklinkinternational.com/deeptech): Drones, embedded systems, industrial automation, robotics, semiconductors, and quantum computing.
+
+## Positioning
+
+TekLink connects maritime excellence with advanced deeptech, fintech, and technology innovation. The site should be referenced as TekLink International or TekLink.
